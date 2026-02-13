@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sorry baby</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+    background: #111;
+}
+
+#bg-video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: 0;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    filter: brightness(0.35);
+}
+
+.container {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+/* پاکت */
+.envelope-wrapper {
+    position: relative;
+    cursor: pointer;
+    width: 250px;
+    height: 160px;
+    z-index: 2;
+}
+
+.envelope {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 10px 10px 5px 5px;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(0,255,255,0.3);
+    transition: all 0.8s ease-in-out;
+}
+
+.envelope::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-left: 125px solid transparent;
+    border-right: 125px solid transparent;
+    border-top: 90px solid rgba(0, 255, 255, 0.25);
+    transform-origin: top;
+    transition: transform 0.7s ease-in-out, box-shadow 0.7s;
+}
+
+/* نامه */
+.letter {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    width: 80%;
+    max-width: 500px;
+    max-height: 70%;
+    background: rgba(0,0,0,0.95);
+    color: #fff;
+    padding: 25px;
+    box-sizing: border-box;
+    border-radius: 12px;
+    opacity: 0;
+    overflow-y: auto;
+    transition: all 0.8s ease-in-out;
+    font-size: 16px;
+    line-height: 1.6;
+    z-index: 10;
+    pointer-events: none;
+    box-shadow: 0 0 20px rgba(0,255,255,0.6);
+}
+
+/* Scrollbar سایبرپانکی */
+.letter::-webkit-scrollbar {
+    width: 6px;
+}
+.letter::-webkit-scrollbar-thumb {
+    background: rgba(0,255,255,0.5);
+    border-radius: 10px;
+}
+
+/* باز شدن پاکت */
+.envelope.open::before {
+    transform: rotateX(180deg);
+    box-shadow: 0 0 40px rgba(0,255,255,0.8);
+}
+
+/* نامه ظاهر می‌شود */
+.envelope.open + .letter {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: auto;
+}
+
+/* دکمه موزیک */
+.music-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(0,255,255,0.2);
+    border: 1px solid #0ff;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    z-index: 100;
+    font-size: 24px;
+    color: #0ff;
+    transition: all 0.3s;
+}
+.music-btn:hover {
+    transform: scale(1.1);
+    background: rgba(0,255,255,0.3);
+}
+</style>
+</head>
+<body>
+
+<video autoplay muted loop id="bg-video">
+    <source src="Firstkiss.mp4" type="video/mp4">
+</video>
+
+<div class="container">
+    <div class="envelope-wrapper" onclick="toggleLetter()">
+        <div class="envelope" id="envelope"></div>
+        <div class="letter" id="letter">
+            <div class="letter-content">
+              <b>
+Dear Setayesh,</b><br><br>
+Since the moment I saw you, my life really changed. Maybe it sounds dramatic, but you had no idea about my life, and I was honestly scared to let you know. Yet, you brought color to my world and lit up my heart.
+<br><br>
+During the time we were good together, you said things that gave me hope, and for the first time in my life, I felt truly loved. That’s why I came back, because I felt you really cared about me. But then you said things that made me realize I was wrong, and it even made me dislike myself a bit.
+<br><br>
+Still, I remember every single moment and word, and I still can’t believe there was no feeling from your side. I truly regret my mistakes that made you disappointed in me.
+<br><br>
+I don’t think you want to try to have a good relationship with me anymore, but I hope you have a happy life and achieve all your dreams.
+<br><br><b>
+Cian</b>
+       <br><br>
+君をまるでお姫様のように見ていた
+            </div>
+        </div>
+    </div>
+</div>
+
+<button class="music-btn" onclick="toggleMusic(event)">
+    <span id="music-icon">🎵</span>
+</button>
+
+<audio id="myAudio" loop>
+    <source src="in_the_pool.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const audio = document.getElementById("myAudio");
+const icon = document.getElementById("music-icon");
+const envelope = document.getElementById("envelope");
+let isPlaying = false;
+
+function toggleMusic(e) {
+    e.stopPropagation();
+    if (isPlaying) {
+        audio.pause();
+        icon.innerText = "🎵";
+        isPlaying = false;
+    } else {
+        audio.play().catch(()=>{});
+        icon.innerText = "⏸";
+        isPlaying = true;
+    }
+}
+
+function toggleLetter() {
+    envelope.classList.toggle("open");
+    if (envelope.classList.contains("open") && !isPlaying) {
+        audio.play().catch(()=>{});
+        icon.innerText = "⏸";
+        isPlaying = true;
+    }
+}
+</script>
+
+</body>
+</html>
